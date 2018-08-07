@@ -1,0 +1,9 @@
+.box-body {
+    text-align: center;
+    padding-top:50px;
+}
+
+.box {
+  width: 50%;
+  display: inline-flex;
+}
