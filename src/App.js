@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import Header from './components/Header';
+import Header from './components/layout/Header';
 import Body from './components/Body';
-import './App.css';
-import 'bulma/css/bulma.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'fontawesome';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="conainer">
         <Header/>
         <Body/>
       </div>

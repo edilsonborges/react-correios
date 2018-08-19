@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Body extends Component {
   render() {
     return (
-      <div className="container">
-        <div className="box-body">
-          <div className="box">
-            <input className="input" label="teste"/>
-            <button className="button">Adicionar</button>
-          </div>
+      <form className="card  text-center">
+        <div className="card-body">
+          <input className="form-control form-control-lg" placeholder="Digite o código de rastreio"/>
         </div>
-      </div>
+      </form>
     );
   }
 }
