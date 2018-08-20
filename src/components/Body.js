@@ -8,6 +8,8 @@ class Body extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state.codigo);
+    fetch('https://correios.postmon.com.br/rastreamento/?objeto='+this.state.codigo)
+      .then((v) => (console.log(v)));
   }
   handleChange(e) {
     e.preventDefault();
