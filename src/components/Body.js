@@ -1,15 +1,26 @@
 import React, { Component } from "react";
 
 class Body extends Component {
-  handleSubmit = (e) => {
-    console.log(e);
-    // this.setState({ codigo: e.codigo });
+    state = {
+      codigo: 'PS158730655BR',
+      // codigo: 'PS153948797BR'
+    }
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(this.state.codigo);
+  }
+  handleChange(e) {
+    e.preventDefault();
+    // console.log(e.target.name+': '+e.target.value);
+    this.setState({ [e.target.name]: e.target.value });
   }
   render() {
     return (
-      <form onSubmit={this.handleSubmit} className="card  text-center">
+      <form onSubmit={this.handleSubmit.bind(this)} className="card text-center">
         <div className="card-body">
-          <input className="form-control form-control-lg" placeholder="Digite o código de rastreio" />
+          <input name="codigo" className="form-control form-control-lg"
+          placeholder="Digite o código de rastreio"
+          onChange={this.handleChange.bind(this)} value={this.state.codigo} />
         </div>
       </form>
     );
