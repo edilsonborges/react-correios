@@ -8,8 +8,19 @@ class Body extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state.codigo);
-    fetch('https://correios.postmon.com.br/rastreamento/?objeto='+this.state.codigo)
-      .then((v) => (console.log(v)));
+    let objHeader = new Headers({
+    'Access-Control-Allow-Origin':'*',
+    'Content-Type': 'multipart/form-data'
+    });
+    fetch('https://correios.postmon.com.br/rastreamento/?objeto='+this.state.codigo, { method: 'GET',
+               headers:{
+                'Access-Control-Allow-Origin':'*',
+                'Content-Type': 'multipart/form-data'
+              },
+               mode: 'cors',
+               cache: 'default' }
+)
+      .then((v) => (console.log(v.body)));
   }
   handleChange(e) {
     e.preventDefault();
