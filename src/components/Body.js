@@ -8,20 +8,21 @@ class Body extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state.codigo);
-    let objHeader = new Headers({
-    'Access-Control-Allow-Origin':'*',
-    'Content-Type': 'multipart/form-data',
-    'Access-Control-Allow-Credentials': 'true'
-    });
-    fetch('https://correios.postmon.com.br/rastreamento/?objeto='+this.state.codigo, { method: 'GET',
-              //  headers:{
-              //   'Access-Control-Allow-Origin':'*',
-              //   'Content-Type': 'multipart/form-data',
-              //   'Access-Control-Allow-Credentials': 'true'
-              // },
-              headers: objHeader,
-               mode: 'cors',
-               cache: 'default' }
+    // let objHeader = new Headers({
+    // 'Access-Control-Allow-Origin':'http://localhost:3000',
+    // 'Content-Type': 'multipart/form-data',
+    // 'Access-Control-Allow-Credentials': 'true'
+    // });
+    fetch('https://correios.postmon.com.br/rastreamento/?objeto='+this.state.codigo
+    // , { method: 'GET',
+    //            headers:{
+    //             'Access-Control-Allow-Origin':'*',
+    //             'Content-Type': 'multipart/form-data',
+    //             'Access-Control-Allow-Credentials': 'true'
+    //           },
+    //           headers: objHeader,
+    //           mode: 'cors',
+    //           cache: 'default' }
 )
       .then((v) => (console.log(v.body)));
   }
