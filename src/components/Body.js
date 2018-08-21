@@ -10,13 +10,16 @@ class Body extends Component {
     console.log(this.state.codigo);
     let objHeader = new Headers({
     'Access-Control-Allow-Origin':'*',
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'multipart/form-data',
+    'Access-Control-Allow-Credentials': 'true'
     });
     fetch('https://correios.postmon.com.br/rastreamento/?objeto='+this.state.codigo, { method: 'GET',
-               headers:{
-                'Access-Control-Allow-Origin':'*',
-                'Content-Type': 'multipart/form-data'
-              },
+              //  headers:{
+              //   'Access-Control-Allow-Origin':'*',
+              //   'Content-Type': 'multipart/form-data',
+              //   'Access-Control-Allow-Credentials': 'true'
+              // },
+              headers: objHeader,
                mode: 'cors',
                cache: 'default' }
 )
