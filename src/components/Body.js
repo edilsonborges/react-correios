@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import TrackingCorreios from 'tracking-correios';
 class Body extends Component {
   state = {
     codigo: 'PS158730655BR',
@@ -8,15 +8,8 @@ class Body extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state.codigo);
-    let result = fetch('http://127.0.0.1:8181/track/' + this.state.codigo + '/json', { method: "GET" })
-      .then(function (response) {
-        if (response.ok) {
-          return response.json();
-        }
-      }).catch(function (err) {
-        console.log(err)
-      });
-      console.log(result);
+    TrackingCorreios.track('PS158730655BR')
+    .then(console.log);
   }
   handleChange(e) {
     e.preventDefault();
