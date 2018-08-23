@@ -10,7 +10,7 @@ class Body extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state.codigo);
-    const request = axios.get('http://127.0.0.1:5000/track/PS153948797BR/json')
+    const request = axios.get('http://173.255.201.207:5000/track/PS153948797BR/json')
             .then(resp => console.log(resp))
   }
 
