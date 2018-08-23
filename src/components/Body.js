@@ -1,20 +1,24 @@
 import React, { Component } from "react";
-import TrackingCorreios from 'tracking-correios';
+import axios from 'axios';
+
 class Body extends Component {
   state = {
     codigo: 'PS158730655BR',
     // codigo: 'PS153948797BR'
+    // codigo: 'RY155347486CN'
   }
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state.codigo);
-    TrackingCorreios.track('PS158730655BR')
-    .then(console.log);
+    const request = axios.get('http://127.0.0.1:5000/track/PS153948797BR/json')
+            .then(resp => console.log(resp))
   }
+
   handleChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)} className="card text-center">
