@@ -9,8 +9,8 @@ class Body extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state.codigo);
-    const request = axios.get('http://173.255.201.207:5000/track/PS153948797BR/json')
+    console.log();
+    const request = axios.get(`http://api.edilsonborges.com.br:5000/track/${this.state.codigo}/json`)
             .then(resp => console.log(resp))
   }
 
