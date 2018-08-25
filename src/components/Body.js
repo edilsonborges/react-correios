@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Card from "./Card";
+import Cards from "./Cards";
 
 class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      codigo: "PS158730655BR",
-      // codigo: 'PS153948797BR'
-      // codigo:… 'RY155347486CN'
-      card: [{}],
+      // codigo: "PS158730655BR",
+      // codigo: 'PS153948797BR',
+      // codigo: 'RY155347486CN',
+      codigo: "OF960682133BR",
+      trackedPackage: "",
       showCard: false
     };
   }
@@ -18,8 +19,8 @@ class Body extends Component {
     axios
       .get(`http://api.edilsonborges.com.br/track/${this.state.codigo}/json`)
       .then(resp => {
-        console.log(resp);
-        this.setState({ card: resp, showCard: true });
+        // console.log(resp);
+        this.setState({ trackedPackage: resp, showCard: true });
       })
       .catch(err => console.log(err));
   }
@@ -50,7 +51,7 @@ class Body extends Component {
             className="btn btn-primary btn-block"
           />
         </div>
-        <Card value={this.state.card} />
+        <Cards trackedPackage={this.state.trackedPackage} />
       </form>
     );
   }
