@@ -1,17 +1,27 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
+import Card from "./Card";
 
 class Body extends Component {
-  state = {
-    codigo: 'PS158730655BR',
-    // codigo: 'PS153948797BR'
-    // codigo: 'RY155347486CN'
+  constructor(props) {
+    super(props);
+    this.state = {
+      codigo: "PS158730655BR",
+      // codigo: 'PS153948797BR'
+      // codigo:… 'RY155347486CN'
+      card: [{}],
+      showCard: false
+    };
   }
   handleSubmit(e) {
     e.preventDefault();
-    console.log();
-    const request = axios.get(`http://api.edilsonborges.com.br:5000/track/${this.state.codigo}/json`)
-            .then(resp => console.log(resp))
+    axios
+      .get(`http://api.edilsonborges.com.br/track/${this.state.codigo}/json`)
+      .then(resp => {
+        console.log(resp);
+        this.setState({ card: resp, showCard: true });
+      })
+      .catch(err => console.log(err));
   }
 
   handleChange(e) {
@@ -21,12 +31,26 @@ class Body extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)} className="card text-center">
+      <form
+        onSubmit={this.handleSubmit.bind(this)}
+        className="card text-center"
+      >
         <div className="card-body">
-          <input name="codigo" className="form-control form-control-lg"
+          <input
+            name="codigo"
+            className="form-control form-control-lg"
             placeholder="Digite o código de rastreio"
-            onChange={this.handleChange.bind(this)} value={this.state.codigo} />
+            onChange={this.handleChange.bind(this)}
+            value={this.state.codigo}
+          />
+          <input
+            type="submit"
+            value="Buscar código"
+            style={{ backgroundColor: "#306196" }}
+            className="btn btn-primary btn-block"
+          />
         </div>
+        <Card value={this.state.card} />
       </form>
     );
   }
