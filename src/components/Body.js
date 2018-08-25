@@ -19,7 +19,6 @@ class Body extends Component {
     axios
       .get(`http://api.edilsonborges.com.br/track/${this.state.codigo}/json`)
       .then(resp => {
-        // console.log(resp);
         this.setState({ trackedPackage: resp, showCard: true });
       })
       .catch(err => console.log(err));
@@ -51,7 +50,10 @@ class Body extends Component {
             className="btn btn-primary btn-block"
           />
         </div>
-        <Cards trackedPackage={this.state.trackedPackage} />
+        <Cards
+          codigo={this.state.codigo}
+          trackedPackage={this.state.trackedPackage}
+        />
       </form>
     );
   }
