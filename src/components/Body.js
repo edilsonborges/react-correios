@@ -6,10 +6,10 @@ class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // codigo: "PS158730655BR",
+      codigo: "PS158730655BR",
       // codigo: 'PS153948797BR',
       // codigo: 'RY155347486CN',
-      codigo: "OF960682133BR",
+      // codigo: "OF960682133BR",
       trackedPackage: "",
       showCard: false
     };
@@ -17,7 +17,7 @@ class Body extends Component {
   handleSubmit(e) {
     e.preventDefault();
     axios
-      .get(`http://api.edilsonborges.com.br/track/${this.state.codigo}/json`)
+      .get(`http://correiosrestapi.edilsonborges.com.br/${this.state.codigo}`)
       .then(resp => {
         this.setState({ trackedPackage: resp, showCard: true });
       })

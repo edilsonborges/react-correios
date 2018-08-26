@@ -8,66 +8,74 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ProgressBar } from "react-bootstrap";
 import uuid from "uuid";
-import moment from "moment";
-import "moment/locale/pt-br";
-
+// import { StaticMap } from "react-map-gl";
+import "./layout/css/Card.css";
+require("dotenv").config();
 library.add(faTruck, faTruckLoading, faClipboard);
-
 class Card extends Component {
-  state = {
-    isDelivered: "",
-    postedAt: "",
-    updatedAt: "",
-    track: {
-      status: "",
-      observation: "",
-      trackedAt: "",
-      unit: ""
-    },
-    showDetails: false
-  };
+  constructor() {
+    super();
+    this.state = {
+      showDetails: false
+    };
+  }
+
   render() {
     const { trackedPackage } = this.props;
-    const dataTrackedPackage = trackedPackage ? trackedPackage.data.data : "";
-    const { isDelivered, postedAt, updatedAt } = dataTrackedPackage;
+    const objeto = trackedPackage ? trackedPackage.data.objeto[0] : "";
+    if (objeto) {
+      objeto.evento.reverse();
+    }
     return (
       <div>
-        {dataTrackedPackage ? (
+        {objeto ? (
           <div className="container">
             <ul className="list-group" style={{ textAlign: "initial" }}>
               <li className="list-group-item">
-                <FontAwesomeIcon icon="clipboard" /> Status:{" "}
-                {isDelivered ? "Entregue" : "Ainda não entregue"}
+                <FontAwesomeIcon icon="clipboard" /> Último status:{" "}
+                {objeto.evento[objeto.evento.length - 1].descricao}
               </li>
               <li className="list-group-item">
                 <FontAwesomeIcon icon="truck-loading" /> Postado:{" "}
-                {moment(postedAt).format("LLLL")}
+                {objeto.evento[0].data} às {objeto.evento[0].hora}
               </li>
               <li className="list-group-item">
                 <FontAwesomeIcon icon="truck" /> Atualizado:{" "}
-                {moment(updatedAt).format("LLLL")}
+                {objeto.evento[objeto.evento.length - 1].data} às{" "}
+                {objeto.evento[objeto.evento.length - 1].hora}
               </li>
             </ul>
             <ProgressBar active now={50} />
             <ul className="list-group" style={{ textAlign: "initial" }}>
-              <div className="progress" style={{ height: "10px" }} />
-              {console.log(dataTrackedPackage)}
-              {dataTrackedPackage.track.map(value => {
+              {console.log(objeto.evento)}
+              {objeto.evento.map(evento => {
                 return (
                   <li
                     key={uuid()}
                     className="list-group-item"
-                    style={{ textTransform: "uppercase" }}
+                    style={{ textTransform: "" }}
                   >
-                    {value.status}
-                    {" | "}
-                    {moment(value.trackedAt).format("LL")}
-                    {" | "}
-                    {value.observation ? value.observation : "-"}
+                    {evento.descricao}
+                    {evento.hasOwnProperty("destino")
+                      ? ` para ${evento.destino[0].local} (${
+                          evento.destino[0].cidade
+                        }/${evento.destino[0].uf})`
+                      : ""}
+                    {` às ${evento.hora} em ${evento.data}`}
                   </li>
                 );
               })}
             </ul>
+            {/* <StaticMap
+              width={400}
+              height={400}
+              mapboxApiAccessToken={
+                "pk.eyJ1IjoiZWRpbHNvbmJvcmdlcyIsImEiOiJjamxhOWtzeWIweTBiM3huNjFhZG5zOGk3In0.5YgkR8xJUmDG1Wp7AtOX9w"
+              }
+              latitude={objeto.evento[0].unidade.endereco.latitude}
+              longitude={objeto.evento[0].unidade.endereco.longitude}
+              zoom={3}
+            /> */}
           </div>
         ) : (
           ""
