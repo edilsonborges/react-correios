@@ -6,27 +6,46 @@ class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      codigo: "PS158730655BR",
+      codigo: "",
+      // codigo: "PS158730655BR",
       // codigo: "PS153948797BR",
       // codigo: 'RY155347486CN',
       // codigo: "OF960682133BR",
+      // codigo: "RB591661305SG", // origem: Singapura
+      // codigo: "RB569174217SG", // origem: Malásia
+      // codigo: "RP003232834CN", // origem: Hong Kong
       trackedPackage: "",
       showCard: false
     };
   }
   handleSubmit(e) {
-    e.preventDefault();
+    return this.loadComponent(e);
+  }
+
+  loadComponent(e = null, codigo = null) {
+    if (e) {
+      e.preventDefault();
+    }
+    if (this.state.codigo) {
+      codigo = this.state.codigo;
+    }
+    console.log(codigo);
     axios
-      .get(`http://correiosrestapi.edilsonborges.com.br/${this.state.codigo}`)
+      .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
       .then(resp => {
         this.setState({ trackedPackage: resp, showCard: true });
       })
       .catch(err => console.log(err));
   }
-
   handleChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value, trackedPackage: "" });
+  }
+  componentDidMount() {
+    if (this.props.match.params.object) {
+      this.setState({ codigo: this.props.match.params.object });
+      this.loadComponent(null, this.props.match.params.object);
+    }
   }
 
   render() {
