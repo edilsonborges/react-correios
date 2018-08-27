@@ -54,7 +54,7 @@ class Body extends Component {
         onSubmit={this.handleSubmit.bind(this)}
         className="card text-center"
       >
-        <div className="card-body">
+        <div className="card-body container">
           <input
             name="codigo"
             className="form-control form-control-lg"
