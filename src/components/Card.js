@@ -13,21 +13,42 @@ import "./layout/css/Card.css";
 
 library.add(faTruck, faTruckLoading, faClipboard);
 
+const getCurrentProgress = o => {
+  let progress = 0;
+  if (o.evento[o.evento.length - 1].descricao === "Objeto postado") {
+    progress = 10;
+  }
+  if (
+    o.evento[o.evento.length - 1].descricao ===
+    "Objeto entregue ao destinatário"
+  ) {
+    progress = 100;
+  } else {
+    progress = o.evento.length * 10;
+    progress = progress >= 100 ? 90 : progress;
+  }
+  return progress;
+};
+
 class Card extends Component {
   constructor() {
     super();
     this.state = {
       showDetails: false,
-      width: 400,
+      width: 510,
       height: 400,
-      zoom: 8,
+      zoom: 3.8,
       mapboxApiAccessToken: process.env.REACT_APP_MAPBOX_TOKEN
     };
   }
-
   render() {
     const { trackedPackage } = this.props;
-    const objeto = trackedPackage ? trackedPackage.data.objeto[0] : "";
+    const objeto =
+      trackedPackage &&
+      trackedPackage.data.objeto[0].categoria !==
+        "ERRO: Objeto não encontrado na base de dados dos Correios."
+        ? trackedPackage.data.objeto[0]
+        : "";
     if (objeto) {
       objeto.evento.reverse();
     }
@@ -51,9 +72,8 @@ class Card extends Component {
                   {objeto.evento[objeto.evento.length - 1].hora}
                 </li>
               </ul>
-              <ProgressBar active now={50} />
+              <ProgressBar active now={getCurrentProgress(objeto)} />
               <ul className="list-group" style={{ textAlign: "initial" }}>
-                {console.log(objeto.evento)}
                 {objeto.evento.map(evento => {
                   return (
                     <li
@@ -71,37 +91,50 @@ class Card extends Component {
                     </li>
                   );
                 })}
+                <StaticMap
+                  {...this.state}
+                  latitude={Number(objeto.evento[0].unidade.endereco.latitude)}
+                  longitude={Number(
+                    objeto.evento[0].unidade.endereco.longitude
+                  )}
+                >
+                  <Marker
+                    latitude={Number(
+                      objeto.evento[0].unidade.endereco.latitude
+                    )}
+                    longitude={Number(
+                      objeto.evento[0].unidade.endereco.longitude
+                    )}
+                    offsetLeft={-20}
+                    offsetTop={-10}
+                  >
+                    <div>
+                      <span role="img" aria-label="Origem">
+                        📍
+                      </span>
+                    </div>
+                  </Marker>
+                  <Marker
+                    latitude={Number(
+                      objeto.evento[objeto.evento.length - 1].unidade.endereco
+                        .latitude
+                    )}
+                    longitude={Number(
+                      objeto.evento[objeto.evento.length - 1].unidade.endereco
+                        .longitude
+                    )}
+                    offsetLeft={-20}
+                    offsetTop={-10}
+                  >
+                    <div>
+                      <span role="img" aria-label="Atualmente">
+                        📦
+                      </span>
+                    </div>
+                  </Marker>
+                </StaticMap>
               </ul>
             </div>
-            <StaticMap
-              {...this.state}
-              latitude={Number(objeto.evento[0].unidade.endereco.latitude)}
-              longitude={Number(objeto.evento[0].unidade.endereco.longitude)}
-              zoom={3}
-            >
-              <Marker
-                latitude={Number(objeto.evento[0].unidade.endereco.latitude)}
-                longitude={Number(objeto.evento[0].unidade.endereco.longitude)}
-                offsetLeft={-20}
-                offsetTop={-10}
-              >
-                <div>Origem</div>
-              </Marker>
-              <Marker
-                latitude={Number(
-                  objeto.evento[objeto.evento.length - 1].unidade.endereco
-                    .latitude
-                )}
-                longitude={Number(
-                  objeto.evento[objeto.evento.length - 1].unidade.endereco
-                    .longitude
-                )}
-                offsetLeft={-20}
-                offsetTop={-10}
-              >
-                <div>Atual</div>
-              </Marker>
-            </StaticMap>
           </div>
         ) : (
           ""
