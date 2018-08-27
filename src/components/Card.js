@@ -14,20 +14,30 @@ import "./layout/css/Card.css";
 library.add(faTruck, faTruckLoading, faClipboard);
 
 const getCurrentProgress = o => {
-  let progress = 0;
+  let objProgress = {
+    progress: 0
+  };
   if (o.evento[o.evento.length - 1].descricao === "Objeto postado") {
-    progress = 10;
+    objProgress = {
+      progress: 10
+    };
   }
   if (
     o.evento[o.evento.length - 1].descricao ===
     "Objeto entregue ao destinatário"
   ) {
-    progress = 100;
+    objProgress = {
+      progress: 100
+    };
   } else {
-    progress = o.evento.length * 10;
-    progress = progress >= 100 ? 90 : progress;
+    let progress = o.evento.length * 10;
+    if (progress >= 100) {
+      objProgress = { progress: 90 }
+    } else {
+      objProgress = { progress: progress }
+    }
   }
-  return progress;
+  return objProgress;
 };
 
 class Card extends Component {
@@ -45,7 +55,7 @@ class Card extends Component {
     const { trackedPackage } = this.props;
     const objeto =
       trackedPackage &&
-      trackedPackage.data.objeto[0].categoria !==
+        trackedPackage.data.objeto[0].categoria !==
         "ERRO: Objeto não encontrado na base de dados dos Correios."
         ? trackedPackage.data.objeto[0]
         : "";
@@ -72,7 +82,7 @@ class Card extends Component {
                   {objeto.evento[objeto.evento.length - 1].hora}
                 </li>
               </ul>
-              <ProgressBar active now={getCurrentProgress(objeto)} />
+              <ProgressBar active now={getCurrentProgress(objeto).progress} />
               <ul className="list-group" style={{ textAlign: "initial" }}>
                 {objeto.evento.map(evento => {
                   return (
@@ -84,8 +94,8 @@ class Card extends Component {
                       {evento.descricao}
                       {evento.hasOwnProperty("destino")
                         ? ` para ${evento.destino[0].local} (${
-                            evento.destino[0].cidade
-                          }/${evento.destino[0].uf})`
+                        evento.destino[0].cidade
+                        }/${evento.destino[0].uf})`
                         : ""}
                       {` às ${evento.hora} em ${evento.data}`}
                     </li>
@@ -137,8 +147,8 @@ class Card extends Component {
             </div>
           </div>
         ) : (
-          ""
-        )}
+            ""
+          )}
       </div>
     );
   }
