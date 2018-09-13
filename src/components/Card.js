@@ -32,9 +32,9 @@ const getCurrentProgress = o => {
   } else {
     let progress = o.evento.length * 10;
     if (progress >= 100) {
-      objProgress = { progress: 90 }
+      objProgress = { progress: 90 };
     } else {
-      objProgress = { progress: progress }
+      objProgress = { progress: progress };
     }
   }
   return objProgress;
@@ -55,7 +55,7 @@ class Card extends Component {
     const { trackedPackage } = this.props;
     const objeto =
       trackedPackage &&
-        trackedPackage.data.objeto[0].categoria !==
+      trackedPackage.data.objeto[0].categoria !==
         "ERRO: Objeto não encontrado na base de dados dos Correios."
         ? trackedPackage.data.objeto[0]
         : "";
@@ -94,8 +94,8 @@ class Card extends Component {
                       {evento.descricao}
                       {evento.hasOwnProperty("destino")
                         ? ` para ${evento.destino[0].local} (${
-                        evento.destino[0].cidade
-                        }/${evento.destino[0].uf})`
+                            evento.destino[0].cidade
+                          }/${evento.destino[0].uf})`
                         : ""}
                       {` às ${evento.hora} em ${evento.data}`}
                     </li>
@@ -147,8 +147,8 @@ class Card extends Component {
             </div>
           </div>
         ) : (
-            ""
-          )}
+          ""
+        )}
       </div>
     );
   }
