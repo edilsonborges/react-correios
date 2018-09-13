@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTruck } from "@fortawesome/free-solid-svg-icons";
-library.add(faTruck);
+import { fab } from "@fortawesome/free-brands-svg-icons";
+library.add(fab);
 
 class Header extends Component {
   render() {
@@ -21,18 +21,17 @@ class Header extends Component {
                   rel="noopener noreferrer"
                   href="https://twitter.com/edilsonfborges"
                 >
-                  <i className="fab fa-twitter" /> Twitter
-                  <FontAwesomeIcon icon="truck" />
+                  <FontAwesomeIcon icon={["fab", "twitter"]} /> Twitter
                 </a>
               </li>
               <li className="nav-item">
                 <a
-                  className="btn btm-small btn-secondary"
+                  className="btn btn-secondary"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://github.com/edilsonborges/react-correios"
                 >
-                  <i className="fab fa-github" /> GitHub
+                  <FontAwesomeIcon icon={["fab", "github"]} /> GitHub
                 </a>
               </li>
             </ul>
