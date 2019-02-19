@@ -101,6 +101,7 @@ class Card extends Component {
                     </li>
                   );
                 })}
+                {console.log(objeto.evento[0].unidade.endereco.longitude)}
                 <StaticMap
                   {...this.state}
                   latitude={Number(objeto.evento[0].unidade.endereco.latitude)}

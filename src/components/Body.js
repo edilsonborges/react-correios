@@ -6,7 +6,8 @@ class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      codigo: "",
+      // codigo: "",
+      // codigo: "OG042063528BR",
       // codigo: "PS158730655BR",
       // codigo: "PS153948797BR",
       // codigo: 'RY155347486CN',
@@ -33,6 +34,7 @@ class Body extends Component {
     axios
       .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
       .then(resp => {
+        console.log(resp);
         this.setState({ trackedPackage: resp, showCard: true });
       })
       .catch(err => console.log(err));
