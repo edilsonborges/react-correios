@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Cards from "./Cards";
-import { Container } from "react-bootstrap";
+import { Container, Card } from "react-bootstrap";
 
 class Body extends Component {
   constructor(props) {
@@ -53,30 +53,37 @@ class Body extends Component {
   render() {
     return (
       <Container>
-        <form
-          onSubmit={this.handleSubmit.bind(this)}
-          className="card text-center"
-        >
-          <div className="input-group mb-3">
-            <input
-              name="codigo"
-              className="form-control form-control-lg"
-              placeholder="Digite o código de rastreio"
-              onChange={this.handleChange.bind(this)}
-              value={this.state.codigo}
-            />
-            <input
-              type="submit"
-              value="Buscar código"
-              style={{ backgroundColor: "#306196" }}
-              className="btn btn-primary btn-block"
-            />
-          </div>
-          <Cards
-            codigo={this.state.codigo}
-            trackedPackage={this.state.trackedPackage}
-          />
-        </form>
+        <Card style={{ border: 0 }}>
+          <Card.Body>
+            <form
+              style={{ border: 0 }}
+              onSubmit={this.handleSubmit.bind(this)}
+              className="card text-center"
+            >
+              <div className="input-group mb-3">
+                <input
+                  name="codigo"
+                  className="form-control form-control-lg"
+                  placeholder="Digite o código de rastreio"
+                  onChange={this.handleChange.bind(this)}
+                  value={this.state.codigo}
+                />
+                <div className="input-group-append">
+                  <input
+                    type="submit"
+                    value="Buscar"
+                    style={{ backgroundColor: "#306196" }}
+                    className="btn btn-primary btn-block"
+                  />
+                </div>
+              </div>
+              <Cards
+                codigo={this.state.codigo}
+                trackedPackage={this.state.trackedPackage}
+              />
+            </form>
+          </Card.Body>
+        </Card>
       </Container>
     );
   }
