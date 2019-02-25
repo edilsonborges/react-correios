@@ -11,24 +11,22 @@ class Header extends Component {
       <div>
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Navbar.Brand href="/">Rastreamento de Objetos</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto" />
-            <Nav>
-              <Nav.Link
-                target="blank"
-                href="https://twitter.com/edilsonfborges"
-              >
-                <FontAwesomeIcon icon={["fab", "twitter"]} />
-              </Nav.Link>
-              <Nav.Link
-                target="blank"
-                href="https://github.com/edilsonborges/react-correios"
-              >
-                <FontAwesomeIcon icon={["fab", "github"]} />
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
+          <Nav className="flex-row ml-md-auto d-md-flex">
+            <Nav.Link
+              style={{ marginRight: 10 }}
+              target="blank"
+              href="https://twitter.com/edilsonfborges"
+            >
+              <FontAwesomeIcon icon={["fab", "twitter"]} />
+            </Nav.Link>
+
+            <Nav.Link
+              target="blank"
+              href="https://github.com/edilsonborges/react-correios"
+            >
+              <FontAwesomeIcon icon={["fab", "github"]} />
+            </Nav.Link>
+          </Nav>
         </Navbar>
       </div>
     );

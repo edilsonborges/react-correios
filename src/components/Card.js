@@ -6,7 +6,7 @@ import {
   faTruckLoading,
   faClipboard
 } from "@fortawesome/free-solid-svg-icons";
-import { ProgressBar, Container } from "react-bootstrap";
+import { ProgressBar, Card as CardBootstrap } from "react-bootstrap";
 import uuid from "uuid";
 import { Marker, StaticMap } from "react-map-gl";
 import "./layout/css/Card.css";
@@ -45,7 +45,7 @@ class Card extends Component {
     super();
     this.state = {
       showDetails: false,
-      width: 510,
+      width: 470,
       height: 400,
       zoom: 3.8,
       mapboxApiAccessToken: process.env.REACT_APP_MAPBOX_TOKEN
@@ -66,45 +66,45 @@ class Card extends Component {
       <div>
         {objeto ? (
           <div>
-            <Container>
-              <ul className="list-group" style={{ textAlign: "initial" }}>
-                <li className="list-group-item">
-                  <FontAwesomeIcon icon="clipboard" /> Último status:{" "}
-                  {objeto.evento[objeto.evento.length - 1].descricao}
-                </li>
-                <li className="list-group-item">
-                  <FontAwesomeIcon icon="truck-loading" /> Postado:{" "}
-                  {objeto.evento[0].data} às {objeto.evento[0].hora}
-                </li>
-                <li className="list-group-item">
-                  <FontAwesomeIcon icon="truck" /> Atualizado:{" "}
-                  {objeto.evento[objeto.evento.length - 1].data} às{" "}
-                  {objeto.evento[objeto.evento.length - 1].hora}
-                </li>
-              </ul>
-              <ProgressBar
-                striped
-                animated
-                now={getCurrentProgress(objeto).progress}
-              />
-              <ul className="list-group" style={{ textAlign: "initial" }}>
-                {objeto.evento.map((evento, i) => {
-                  return (
-                    <li
-                      key={uuid()}
-                      className="list-group-item"
-                      style={{ textTransform: "" }}
-                    >
-                      #{i}: {evento.descricao}
-                      {evento.hasOwnProperty("destino")
-                        ? ` para ${evento.destino[0].local} (${
-                            evento.destino[0].cidade
-                          }/${evento.destino[0].uf})`
-                        : ""}
-                      {` às ${evento.hora} em ${evento.data}`}
-                    </li>
-                  );
-                })}
+            <ul className="list-group" style={{ textAlign: "initial" }}>
+              <li className="list-group-item">
+                <FontAwesomeIcon icon="clipboard" /> Último status:{" "}
+                {objeto.evento[objeto.evento.length - 1].descricao}
+              </li>
+              <li className="list-group-item">
+                <FontAwesomeIcon icon="truck-loading" /> Postado:{" "}
+                {objeto.evento[0].data} às {objeto.evento[0].hora}
+              </li>
+              <li className="list-group-item">
+                <FontAwesomeIcon icon="truck" /> Atualizado:{" "}
+                {objeto.evento[objeto.evento.length - 1].data} às{" "}
+                {objeto.evento[objeto.evento.length - 1].hora}
+              </li>
+            </ul>
+            <ProgressBar
+              striped
+              animated
+              now={getCurrentProgress(objeto).progress}
+            />
+            <ul className="list-group" style={{ textAlign: "initial" }}>
+              {objeto.evento.map((evento, i) => {
+                return (
+                  <li
+                    key={uuid()}
+                    className="list-group-item"
+                    style={{ textTransform: "" }}
+                  >
+                    #{i}: {evento.descricao}
+                    {evento.hasOwnProperty("destino")
+                      ? ` para ${evento.destino[0].local} (${
+                          evento.destino[0].cidade
+                        }/${evento.destino[0].uf})`
+                      : ""}
+                    {` às ${evento.hora} em ${evento.data}`}
+                  </li>
+                );
+              })}
+              <CardBootstrap>
                 <StaticMap
                   {...this.state}
                   latitude={Number(objeto.evento[0].unidade.endereco.latitude)}
@@ -147,8 +147,8 @@ class Card extends Component {
                     </div>
                   </Marker>
                 </StaticMap>
-              </ul>
-            </Container>
+              </CardBootstrap>
+            </ul>
           </div>
         ) : (
           ""
