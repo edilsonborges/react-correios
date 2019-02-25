@@ -6,7 +6,7 @@ import {
   faTruckLoading,
   faClipboard
 } from "@fortawesome/free-solid-svg-icons";
-import { ProgressBar } from "react-bootstrap";
+import { ProgressBar, Container } from "react-bootstrap";
 import uuid from "uuid";
 import { Marker, StaticMap } from "react-map-gl";
 import "./layout/css/Card.css";
@@ -66,7 +66,7 @@ class Card extends Component {
       <div>
         {objeto ? (
           <div>
-            <div className="container">
+            <Container>
               <ul className="list-group" style={{ textAlign: "initial" }}>
                 <li className="list-group-item">
                   <FontAwesomeIcon icon="clipboard" /> Último status:{" "}
@@ -82,16 +82,20 @@ class Card extends Component {
                   {objeto.evento[objeto.evento.length - 1].hora}
                 </li>
               </ul>
-              <ProgressBar active now={getCurrentProgress(objeto).progress} />
+              <ProgressBar
+                striped
+                animated
+                now={getCurrentProgress(objeto).progress}
+              />
               <ul className="list-group" style={{ textAlign: "initial" }}>
-                {objeto.evento.map(evento => {
+                {objeto.evento.map((evento, i) => {
                   return (
                     <li
                       key={uuid()}
                       className="list-group-item"
                       style={{ textTransform: "" }}
                     >
-                      {evento.descricao}
+                      #{i}: {evento.descricao}
                       {evento.hasOwnProperty("destino")
                         ? ` para ${evento.destino[0].local} (${
                             evento.destino[0].cidade
@@ -101,7 +105,6 @@ class Card extends Component {
                     </li>
                   );
                 })}
-                {console.log(objeto.evento[0].unidade.endereco.longitude)}
                 <StaticMap
                   {...this.state}
                   latitude={Number(objeto.evento[0].unidade.endereco.latitude)}
@@ -145,7 +148,7 @@ class Card extends Component {
                   </Marker>
                 </StaticMap>
               </ul>
-            </div>
+            </Container>
           </div>
         ) : (
           ""

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Cards from "./Cards";
+import { Container } from "react-bootstrap";
 
 class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // codigo: "",
+      codigo: "",
+      // codigo: "PT158444782BR",
       // codigo: "OG042063528BR",
       // codigo: "PS158730655BR",
       // codigo: "PS153948797BR",
@@ -30,11 +32,9 @@ class Body extends Component {
     if (this.state.codigo) {
       codigo = this.state.codigo;
     }
-    console.log(codigo);
     axios
       .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
       .then(resp => {
-        console.log(resp);
         this.setState({ trackedPackage: resp, showCard: true });
       })
       .catch(err => console.log(err));
@@ -52,30 +52,32 @@ class Body extends Component {
 
   render() {
     return (
-      <form
-        onSubmit={this.handleSubmit.bind(this)}
-        className="card text-center"
-      >
-        <div className="card-body container">
-          <input
-            name="codigo"
-            className="form-control form-control-lg"
-            placeholder="Digite o código de rastreio"
-            onChange={this.handleChange.bind(this)}
-            value={this.state.codigo}
+      <Container>
+        <form
+          onSubmit={this.handleSubmit.bind(this)}
+          className="card text-center"
+        >
+          <div className="input-group mb-3">
+            <input
+              name="codigo"
+              className="form-control form-control-lg"
+              placeholder="Digite o código de rastreio"
+              onChange={this.handleChange.bind(this)}
+              value={this.state.codigo}
+            />
+            <input
+              type="submit"
+              value="Buscar código"
+              style={{ backgroundColor: "#306196" }}
+              className="btn btn-primary btn-block"
+            />
+          </div>
+          <Cards
+            codigo={this.state.codigo}
+            trackedPackage={this.state.trackedPackage}
           />
-          <input
-            type="submit"
-            value="Buscar código"
-            style={{ backgroundColor: "#306196" }}
-            className="btn btn-primary btn-block"
-          />
-        </div>
-        <Cards
-          codigo={this.state.codigo}
-          trackedPackage={this.state.trackedPackage}
-        />
-      </form>
+        </form>
+      </Container>
     );
   }
 }
