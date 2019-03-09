@@ -6,86 +6,61 @@ import {
   faTruckLoading,
   faClipboard
 } from "@fortawesome/free-solid-svg-icons";
-import { ProgressBar, Card as CardBootstrap } from "react-bootstrap";
+import {
+  ProgressBar,
+  Card as CardBS,
+  ListGroup,
+  ListGroupItem
+} from "react-bootstrap";
 import uuid from "uuid";
 import { Marker, StaticMap } from "react-map-gl";
-
+import Spinner from "./layout/Spinner";
 library.add(faTruck, faTruckLoading, faClipboard);
-
-const getCurrentProgress = obj => {
-  let objProgress = {
-    progress: 0
-  };
-  if (obj.evento[obj.evento.length - 1].descricao === "Objeto postado") {
-    objProgress = {
-      progress: 10
-    };
-  }
-  if (
-    obj.evento[obj.evento.length - 1].descricao ===
-    "Objeto entregue ao destinatário"
-  ) {
-    objProgress = {
-      progress: 100
-    };
-  } else {
-    let progress = obj.evento.length * 10;
-    if (progress >= 100) {
-      objProgress = { progress: 90 };
-    } else {
-      objProgress = { progress: progress };
-    }
-  }
-  return objProgress;
-};
 
 class Card extends Component {
   constructor() {
     super();
     this.state = {
       showDetails: false,
-      width: 470,
+      width: "100%",
       height: 400,
       zoom: 3.8,
       mapboxApiAccessToken: process.env.REACT_APP_MAPBOX_TOKEN
     };
   }
   render() {
-    const { trackedPackage } = this.props;
-    const objeto =
-      trackedPackage &&
-      trackedPackage.data.objeto[0].categoria !==
-        "ERRO: Objeto não encontrado na base de dados dos Correios."
-        ? trackedPackage.data.objeto[0]
-        : "";
-    if (objeto) {
-      objeto.evento.reverse();
-    }
+    const { trackedPackage, showSpinner } = this.props;
+    const objeto = handlePackage(trackedPackage);
     return (
       <div>
+        {showSpinner ? <Spinner /> : ""}
         {objeto ? (
           <div>
-            <ul className="list-group" style={{ textAlign: "initial" }}>
-              <li className="list-group-item">
+            <ListGroup style={{ textAlign: "initial" }}>
+              <ListGroupItem>
                 <FontAwesomeIcon icon="clipboard" /> Último status:{" "}
                 {objeto.evento[objeto.evento.length - 1].descricao}
-              </li>
-              <li className="list-group-item">
+              </ListGroupItem>
+              <ListGroupItem>
                 <FontAwesomeIcon icon="truck-loading" /> Postado:{" "}
                 {objeto.evento[0].data} às {objeto.evento[0].hora}
-              </li>
-              <li className="list-group-item">
-                <FontAwesomeIcon icon="truck" /> Atualizado:{" "}
-                {objeto.evento[objeto.evento.length - 1].data} às{" "}
-                {objeto.evento[objeto.evento.length - 1].hora}
-              </li>
-            </ul>
+              </ListGroupItem>
+              {objeto.evento.length > 1 ? (
+                <ListGroupItem>
+                  <FontAwesomeIcon icon="truck" /> Atualizado:{" "}
+                  {objeto.evento[objeto.evento.length - 1].data} às{" "}
+                  {objeto.evento[objeto.evento.length - 1].hora}
+                </ListGroupItem>
+              ) : (
+                ""
+              )}
+            </ListGroup>
             <ProgressBar
               striped
               animated
               now={getCurrentProgress(objeto).progress}
             />
-            <ul className="list-group" style={{ textAlign: "initial" }}>
+            <ListGroup style={{ textAlign: "initial" }}>
               {objeto.evento.map((evento, i) => {
                 return (
                   <li
@@ -103,7 +78,7 @@ class Card extends Component {
                   </li>
                 );
               })}
-              <CardBootstrap>
+              <CardBS>
                 <StaticMap
                   {...this.state}
                   latitude={Number(objeto.evento[0].unidade.endereco.latitude)}
@@ -146,8 +121,8 @@ class Card extends Component {
                     </div>
                   </Marker>
                 </StaticMap>
-              </CardBootstrap>
-            </ul>
+              </CardBS>
+            </ListGroup>
           </div>
         ) : (
           ""
@@ -156,5 +131,45 @@ class Card extends Component {
     );
   }
 }
+
+const handlePackage = trackedPackage => {
+  const objeto =
+    trackedPackage &&
+    trackedPackage.data.objeto[0].categoria !==
+      "ERRO: Objeto não encontrado na base de dados dos Correios."
+      ? trackedPackage.data.objeto[0]
+      : "";
+  if (objeto) {
+    objeto.evento.reverse();
+  }
+  return objeto;
+};
+
+const getCurrentProgress = obj => {
+  let objProgress = {
+    progress: 0
+  };
+  if (obj.evento[obj.evento.length - 1].descricao === "Objeto postado") {
+    objProgress = {
+      progress: 10
+    };
+  }
+  if (
+    obj.evento[obj.evento.length - 1].descricao ===
+    "Objeto entregue ao destinatário"
+  ) {
+    objProgress = {
+      progress: 100
+    };
+  } else {
+    let progress = obj.evento.length * 10;
+    if (progress >= 100) {
+      objProgress = { progress: 90 };
+    } else {
+      objProgress = { progress: progress };
+    }
+  }
+  return objProgress;
+};
 
 export default Card;

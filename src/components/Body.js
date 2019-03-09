@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Cards from "./Cards";
-import { Container, Card } from "react-bootstrap";
+import { Container, Card, Form } from "react-bootstrap";
 
 class Body extends Component {
   constructor(props) {
@@ -18,7 +18,8 @@ class Body extends Component {
       // codigo: "RB569174217SG", // origem: Malásia
       // codigo: "RP003232834CN", // origem: Hong Kong
       trackedPackage: "",
-      showCard: false
+      showCard: false,
+      showSpinner: false
     };
   }
   handleSubmit(e) {
@@ -26,6 +27,7 @@ class Body extends Component {
   }
 
   loadComponent(e = null, codigo = null) {
+    this.setState({ trackedPackage: "", showCard: false, showSpinner: true });
     if (e) {
       e.preventDefault();
     }
@@ -35,7 +37,11 @@ class Body extends Component {
     axios
       .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
       .then(resp => {
-        this.setState({ trackedPackage: resp, showCard: true });
+        this.setState({
+          trackedPackage: resp,
+          showCard: true,
+          showSpinner: false
+        });
       })
       .catch(err => console.log(err));
   }
@@ -55,7 +61,7 @@ class Body extends Component {
       <Container>
         <Card style={{ border: 0 }}>
           <Card.Body>
-            <form
+            <Form
               style={{ border: 0 }}
               onSubmit={this.handleSubmit.bind(this)}
               className="card text-center"
@@ -80,8 +86,10 @@ class Body extends Component {
               <Cards
                 codigo={this.state.codigo}
                 trackedPackage={this.state.trackedPackage}
+                showCard={this.state.showCard}
+                showSpinner={this.state.showSpinner}
               />
-            </form>
+            </Form>
           </Card.Body>
         </Card>
       </Container>
