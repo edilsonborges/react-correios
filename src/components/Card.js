@@ -9,28 +9,27 @@ import {
 import { ProgressBar, Card as CardBootstrap } from "react-bootstrap";
 import uuid from "uuid";
 import { Marker, StaticMap } from "react-map-gl";
-import "./layout/css/Card.css";
 
 library.add(faTruck, faTruckLoading, faClipboard);
 
-const getCurrentProgress = o => {
+const getCurrentProgress = obj => {
   let objProgress = {
     progress: 0
   };
-  if (o.evento[o.evento.length - 1].descricao === "Objeto postado") {
+  if (obj.evento[obj.evento.length - 1].descricao === "Objeto postado") {
     objProgress = {
       progress: 10
     };
   }
   if (
-    o.evento[o.evento.length - 1].descricao ===
+    obj.evento[obj.evento.length - 1].descricao ===
     "Objeto entregue ao destinatário"
   ) {
     objProgress = {
       progress: 100
     };
   } else {
-    let progress = o.evento.length * 10;
+    let progress = obj.evento.length * 10;
     if (progress >= 100) {
       objProgress = { progress: 90 };
     } else {
@@ -94,7 +93,7 @@ class Card extends Component {
                     className="list-group-item"
                     style={{ textTransform: "" }}
                   >
-                    #{i}: {evento.descricao}
+                    #{i + 1}: {evento.descricao}
                     {evento.hasOwnProperty("destino")
                       ? ` para ${evento.destino[0].local} (${
                           evento.destino[0].cidade
