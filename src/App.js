@@ -1,17 +1,21 @@
 import React, { Component } from "react";
-import Header from "./components/layout/Header";
+import Navbar from "./components/layout/Navbar";
 import Body from "./components/Body";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import "./components/App.css";
+import { Provider } from "./context";
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div>
-          <Header />
-          <Route path="/:object?" component={Body} />
-        </div>
-      </Router>
+      <Provider>
+        <Router>
+          <div>
+            <Navbar />
+            <Route path="/:object?" component={Body} />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }

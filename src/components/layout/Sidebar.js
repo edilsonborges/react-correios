@@ -1,38 +1,71 @@
 import React, { Component } from "react";
+import { Nav } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faTimesCircle, faHistory } from "@fortawesome/free-solid-svg-icons";
+library.add(faTimesCircle, faHistory);
 
 class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      arrCodigos: [
+        "LB182379894SE",
+        "PT158444782BR",
+        "OG042063528BR",
+        "PS158730655BR",
+        "PS153948797BR",
+        "RY155347486CN",
+        "OF960682133BR",
+        "RB591661305SG", // origem: Singapura
+        "RB569174217SG", // origem: Malásia
+        "RP003232834CN" // origem: Hong Kong
+      ]
+    };
+  }
   render() {
-    const { arrCodes } = this.props;
+    const { arrCodigos } = this.state;
     return (
-      <div>
-        {arrCodes && arrCodes.length > 1 ? (
-          <div
-            style={{
-              width: "200px",
-              height: "100vh",
-              border: "solid 1px #dfdfdf"
-            }}
-          >
-            <ul className="list-group">
-              {arrCodes.map((codigo, i) => {
-                return (
-                  <li
-                    style={{ cursor: "pointer" }}
-                    key={i}
-                    onClick={() => this.props.history.push(`/${codigo}`)}
-                    className="list-group-item"
-                  >
-                    {codigo}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
+      <Nav className="col-md-2 d-none d-md-block bg-light sidebar">
+        <div className="sidebar-sticky">
+          {arrCodigos && arrCodigos.length > 1 ? (
+            <div>
+              <ul className="nav flex-column">
+                <li className="nav-item nav-link " style={{ fontSize: "1rem" }}>
+                  <FontAwesomeIcon icon="history" />
+                  <strong> Histórico</strong>
+                </li>
+                {arrCodigos.map((codigo, i) => {
+                  return (
+                    <li key={i} className="nav-item nav-link border">
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => this.props.history.push(`/${codigo}`)}
+                      >
+                        {codigo}
+                      </span>
+
+                      <span
+                        style={{ float: "right", cursor: "pointer" }}
+                        onClick={() => {
+                          this.setState({
+                            arrCodigos: arrCodigos.filter(cod => cod !== codigo)
+                          });
+                        }}
+                      >
+                        <FontAwesomeIcon icon="times-circle" />
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      </Nav>
     );
   }
 }

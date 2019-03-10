@@ -1,31 +1,18 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Cards from "./Cards";
-import { Card, Form, Row, Col } from "react-bootstrap";
+import { Card, Form, Row } from "react-bootstrap";
 import Sidebar from "./layout/Sidebar";
+import { Consumer } from "../context";
 
 class Body extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      codigo: "",
-      trackedPackage: "",
-      showCard: false,
-      showSpinner: false,
-      arrCodes: [
-        "LB182379894SE",
-        "PT158444782BR",
-        "OG042063528BR",
-        "PS158730655BR",
-        "PS153948797BR",
-        "RY155347486CN",
-        "OF960682133BR",
-        "RB591661305SG", // origem: Singapura
-        "RB569174217SG", // origem: Malásia
-        "RP003232834CN" // origem: Hong Kong
-      ]
-    };
-  }
+  state = {
+    codigo: "",
+    trackedPackage: "",
+    showCard: false,
+    showSpinner: false
+  };
+
   handleSubmit(e) {
     return this.loadComponent(e);
   }
@@ -64,48 +51,52 @@ class Body extends Component {
 
   render() {
     return (
-      <div>
-        <Row>
-          <Col sm={2}>
-            <Sidebar arrCodes={this.state.arrCodes} />
-          </Col>
-          <Col sm={8}>
-            <Card style={{ border: 0 }}>
-              <Card.Body>
-                <Form
-                  style={{ border: 0 }}
-                  onSubmit={this.handleSubmit.bind(this)}
-                  className="card text-center"
-                >
-                  <div className="input-group mb-3">
-                    <input
-                      name="codigo"
-                      className="form-control form-control-lg"
-                      placeholder="Digite o código de rastreio"
-                      onChange={this.handleChange.bind(this)}
-                      value={this.state.codigo}
-                    />
-                    <div className="input-group-append">
+      <Consumer>
+        {value => {
+          console.log(value);
+          return (
+            <Row>
+              <Sidebar />
+              <Card
+                className="col-md-9 ml-sm-auto col-lg-10 px-4 pt-5"
+                style={{ border: 0 }}
+              >
+                <Card.Body>
+                  <Form
+                    style={{ border: 0 }}
+                    onSubmit={this.handleSubmit.bind(this)}
+                    className="card text-center"
+                  >
+                    <div className="input-group mb-3">
                       <input
-                        type="submit"
-                        value="Buscar"
-                        style={{ backgroundColor: "#306196" }}
-                        className="btn btn-primary btn-block"
+                        name="codigo"
+                        className="form-control form-control-lg"
+                        placeholder="Digite o código de rastreio"
+                        onChange={this.handleChange.bind(this)}
+                        value={this.state.codigo}
                       />
+                      <div className="input-group-append">
+                        <input
+                          type="submit"
+                          value="Buscar"
+                          style={{ backgroundColor: "#306196" }}
+                          className="btn btn-primary btn-block"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <Cards
-                    codigo={this.state.codigo}
-                    trackedPackage={this.state.trackedPackage}
-                    showCard={this.state.showCard}
-                    showSpinner={this.state.showSpinner}
-                  />
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </div>
+                    <Cards
+                      codigo={this.state.codigo}
+                      trackedPackage={this.state.trackedPackage}
+                      showCard={this.state.showCard}
+                      showSpinner={this.state.showSpinner}
+                    />
+                  </Form>
+                </Card.Body>
+              </Card>
+            </Row>
+          );
+        }}
+      </Consumer>
     );
   }
 }
