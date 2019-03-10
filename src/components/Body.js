@@ -1,25 +1,29 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Cards from "./Cards";
-import { Container, Card, Form } from "react-bootstrap";
+import { Card, Form, Row, Col } from "react-bootstrap";
+import Sidebar from "./layout/Sidebar";
 
 class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
       codigo: "",
-      // codigo: "PT158444782BR",
-      // codigo: "OG042063528BR",
-      // codigo: "PS158730655BR",
-      // codigo: "PS153948797BR",
-      // codigo: 'RY155347486CN',
-      // codigo: "OF960682133BR",
-      // codigo: "RB591661305SG", // origem: Singapura
-      // codigo: "RB569174217SG", // origem: Malásia
-      // codigo: "RP003232834CN", // origem: Hong Kong
       trackedPackage: "",
       showCard: false,
-      showSpinner: false
+      showSpinner: false,
+      arrCodes: [
+        "LB182379894SE",
+        "PT158444782BR",
+        "OG042063528BR",
+        "PS158730655BR",
+        "PS153948797BR",
+        "RY155347486CN",
+        "OF960682133BR",
+        "RB591661305SG", // origem: Singapura
+        "RB569174217SG", // origem: Malásia
+        "RP003232834CN" // origem: Hong Kong
+      ]
     };
   }
   handleSubmit(e) {
@@ -45,10 +49,12 @@ class Body extends Component {
       })
       .catch(err => console.log(err));
   }
+
   handleChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value, trackedPackage: "" });
   }
+
   componentDidMount() {
     if (this.props.match.params.object) {
       this.setState({ codigo: this.props.match.params.object });
@@ -58,41 +64,48 @@ class Body extends Component {
 
   render() {
     return (
-      <Container>
-        <Card style={{ border: 0 }}>
-          <Card.Body>
-            <Form
-              style={{ border: 0 }}
-              onSubmit={this.handleSubmit.bind(this)}
-              className="card text-center"
-            >
-              <div className="input-group mb-3">
-                <input
-                  name="codigo"
-                  className="form-control form-control-lg"
-                  placeholder="Digite o código de rastreio"
-                  onChange={this.handleChange.bind(this)}
-                  value={this.state.codigo}
-                />
-                <div className="input-group-append">
-                  <input
-                    type="submit"
-                    value="Buscar"
-                    style={{ backgroundColor: "#306196" }}
-                    className="btn btn-primary btn-block"
+      <div>
+        <Row>
+          <Col sm={2}>
+            <Sidebar arrCodes={this.state.arrCodes} />
+          </Col>
+          <Col sm={8}>
+            <Card style={{ border: 0 }}>
+              <Card.Body>
+                <Form
+                  style={{ border: 0 }}
+                  onSubmit={this.handleSubmit.bind(this)}
+                  className="card text-center"
+                >
+                  <div className="input-group mb-3">
+                    <input
+                      name="codigo"
+                      className="form-control form-control-lg"
+                      placeholder="Digite o código de rastreio"
+                      onChange={this.handleChange.bind(this)}
+                      value={this.state.codigo}
+                    />
+                    <div className="input-group-append">
+                      <input
+                        type="submit"
+                        value="Buscar"
+                        style={{ backgroundColor: "#306196" }}
+                        className="btn btn-primary btn-block"
+                      />
+                    </div>
+                  </div>
+                  <Cards
+                    codigo={this.state.codigo}
+                    trackedPackage={this.state.trackedPackage}
+                    showCard={this.state.showCard}
+                    showSpinner={this.state.showSpinner}
                   />
-                </div>
-              </div>
-              <Cards
-                codigo={this.state.codigo}
-                trackedPackage={this.state.trackedPackage}
-                showCard={this.state.showCard}
-                showSpinner={this.state.showSpinner}
-              />
-            </Form>
-          </Card.Body>
-        </Card>
-      </Container>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }
