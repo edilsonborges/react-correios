@@ -13,34 +13,33 @@ class Body extends Component {
     showSpinner: false
   };
 
-  handleSubmit(e) {
-    return this.loadComponent(e);
-  }
-
-  loadComponent(e = null, codigo = null) {
-    this.setState({ trackedPackage: "", showCard: false, showSpinner: true });
+  handleSubmit = (dispatch, e) => {
     if (e) {
       e.preventDefault();
     }
-    if (this.state.codigo) {
-      codigo = this.state.codigo;
-    }
-    axios
-      .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
-      .then(resp => {
-        this.setState({
-          trackedPackage: resp,
-          showCard: true,
-          showSpinner: false
-        });
-      })
-      .catch(err => console.log(err));
-  }
+    return this.loadComponent(dispatch, e);
+  };
 
-  handleChange(e) {
-    e.preventDefault();
+  loadComponent = async (dispatch = null, codigo) => {
+    this.setState({ trackedPackage: "", showCard: false, showSpinner: true });
+    const resAPI = await axios.get(
+      `http://correiosrestapi.edilsonborges.com.br/${codigo}`
+    );
+    const newState = {
+      trackedPackage: resAPI,
+      showCard: true,
+      showSpinner: false
+    };
+    dispatch
+      ? dispatch({
+          type: "BUSCAR_CODIGO",
+          payload: newState
+        })
+      : this.setState(newState);
+  };
+
+  handleChange = e =>
     this.setState({ [e.target.name]: e.target.value, trackedPackage: "" });
-  }
 
   componentDidMount() {
     if (this.props.match.params.object) {
@@ -53,7 +52,7 @@ class Body extends Component {
     return (
       <Consumer>
         {value => {
-          console.log(value);
+          const { dispatch } = value;
           return (
             <Row>
               <Sidebar />
@@ -64,7 +63,7 @@ class Body extends Component {
                 <Card.Body>
                   <Form
                     style={{ border: 0 }}
-                    onSubmit={this.handleSubmit.bind(this)}
+                    onSubmit={this.handleSubmit.bind(this, dispatch)}
                     className="card text-center"
                   >
                     <div className="input-group mb-3">

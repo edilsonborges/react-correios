@@ -5,10 +5,15 @@ const Context = React.createContext();
 const reducer = (state, action) => {
   switch (action.type) {
     case "BUSCAR_CODIGO":
-      console.log("buscando código");
-      break;
+      const { trackedPackage, showCard, showSpinner } = action.payload;
+      return {
+        ...state,
+        trackedPackage,
+        showCard,
+        showSpinner
+      };
     default:
-      break;
+      return state;
   }
 };
 
@@ -18,7 +23,13 @@ export class Provider extends Component {
     trackedPackage: "",
     showCard: false,
     showSpinner: false,
-    dispatch: action => this.setState(state => reducer(state, action))
+    dispatch: action => {
+      this.setState(state => {
+        console.log("estado anterior", state);
+        return reducer(state, action);
+      });
+      console.log("estado após", this.state);
+    }
   };
 
   render() {

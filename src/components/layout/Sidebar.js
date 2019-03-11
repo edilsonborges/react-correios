@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faTimesCircle, faHistory } from "@fortawesome/free-solid-svg-icons";
+import { Consumer } from "../../context";
 library.add(faTimesCircle, faHistory);
 
 class Sidebar extends Component {
@@ -27,45 +28,61 @@ class Sidebar extends Component {
   render() {
     const { arrCodigos } = this.state;
     return (
-      <Nav className="col-md-2 d-none d-md-block bg-light sidebar">
-        <div className="sidebar-sticky">
-          {arrCodigos && arrCodigos.length > 1 ? (
-            <div>
-              <ul className="nav flex-column">
-                <li className="nav-item nav-link " style={{ fontSize: "1rem" }}>
-                  <FontAwesomeIcon icon="history" />
-                  <strong> Histórico</strong>
-                </li>
-                {arrCodigos.map((codigo, i) => {
-                  return (
-                    <li key={i} className="nav-item nav-link border">
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={() => this.props.history.push(`/${codigo}`)}
+      <Consumer>
+        {value => {
+          return (
+            <Nav className="col-md-2 d-none d-md-block bg-light sidebar">
+              <div className="sidebar-sticky">
+                {arrCodigos && arrCodigos.length > 1 ? (
+                  <div>
+                    <ul className="nav flex-column">
+                      <li
+                        className="nav-item nav-link "
+                        style={{ fontSize: "1rem" }}
                       >
-                        {codigo}
-                      </span>
+                        <FontAwesomeIcon icon="history" />
+                        <strong> Histórico</strong>
+                      </li>
+                      {arrCodigos.map((codigo, i) => {
+                        return (
+                          <li key={i} className="nav-item nav-link border">
+                            <span
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                value.dispatch({
+                                  type: "BUSCAR_CODIGO",
+                                  payload: codigo
+                                })
+                              }
+                            >
+                              {codigo}
+                            </span>
 
-                      <span
-                        style={{ float: "right", cursor: "pointer" }}
-                        onClick={() => {
-                          this.setState({
-                            arrCodigos: arrCodigos.filter(cod => cod !== codigo)
-                          });
-                        }}
-                      >
-                        <FontAwesomeIcon icon="times-circle" />
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
-      </Nav>
+                            <span
+                              style={{ float: "right", cursor: "pointer" }}
+                              onClick={() => {
+                                this.setState({
+                                  arrCodigos: arrCodigos.filter(
+                                    cod => cod !== codigo
+                                  )
+                                });
+                              }}
+                            >
+                              <FontAwesomeIcon icon="times-circle" />
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </Nav>
+          );
+        }}
+      </Consumer>
     );
   }
 }
