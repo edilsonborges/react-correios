@@ -32,8 +32,8 @@ class Body extends Component {
     if (e) {
       e.preventDefault();
     }
-    if (this.state.codigo || localStorage.getItem("codigo")) {
-      codigo = this.state.codigo || localStorage.getItem("codigo");
+    if (this.state.codigo) {
+      codigo = this.state.codigo;
     }
     axios
       .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
@@ -62,9 +62,15 @@ class Body extends Component {
     this.props.history.push("/");
   }
   componentDidMount() {
-    if (this.props.match.params.object) {
-      this.setState({ codigo: this.props.match.params.object });
-      this.loadComponent(null, this.props.match.params.object);
+    console.log(this.props.match.params.object);
+    if (this.props.match.params.object || localStorage.getItem("codigo")) {
+      this.setState({
+        codigo: this.props.match.params.object || localStorage.getItem("codigo")
+      });
+      this.loadComponent(
+        null,
+        this.props.match.params.object || localStorage.getItem("codigo")
+      );
     }
   }
 
