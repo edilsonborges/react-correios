@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import Cards from "./Cards";
 import { Container, Card, Form } from "react-bootstrap";
@@ -31,12 +32,13 @@ class Body extends Component {
     if (e) {
       e.preventDefault();
     }
-    if (this.state.codigo) {
-      codigo = this.state.codigo;
+    if (this.state.codigo || localStorage.getItem("codigo")) {
+      codigo = this.state.codigo || localStorage.getItem("codigo");
     }
     axios
       .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
       .then(resp => {
+        localStorage.setItem("codigo", codigo);
         this.setState({
           trackedPackage: resp,
           showCard: true,
@@ -48,6 +50,16 @@ class Body extends Component {
   handleChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value, trackedPackage: "" });
+  }
+  handleClear() {
+    localStorage.clear();
+    this.setState({
+      trackedPackage: "",
+      showCard: false,
+      showSpinner: false,
+      codigo: ""
+    });
+    this.props.history.push("/");
   }
   componentDidMount() {
     if (this.props.match.params.object) {
@@ -76,6 +88,15 @@ class Body extends Component {
                 />
                 <div className="input-group-append">
                   <input
+                    type="button"
+                    value="Limpar"
+                    onClick={this.handleClear.bind(this)}
+                    style={{ backgroundColor: "#c7c7c7" }}
+                    className="btn btn-block"
+                  />
+                </div>
+                <div className="input-group-append">
+                  <input
                     type="submit"
                     value="Buscar"
                     style={{ backgroundColor: "#306196" }}
@@ -97,4 +118,4 @@ class Body extends Component {
   }
 }
 
-export default Body;
+export default withRouter(Body);
