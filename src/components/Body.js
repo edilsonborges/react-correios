@@ -36,7 +36,7 @@ class Body extends Component {
       codigo = this.state.codigo;
     }
     axios
-      .get(`http://correiosrestapi.edilsonborges.com.br/${codigo}`)
+      .get(`https://correiosrestapi.edilson.dev/${codigo}`)
       .then(resp => {
         localStorage.setItem("codigo", codigo);
         this.setState({
@@ -62,7 +62,6 @@ class Body extends Component {
     this.props.history.push("/");
   }
   componentDidMount() {
-    console.log(this.props.match.params.object);
     if (this.props.match.params.object || localStorage.getItem("codigo")) {
       this.setState({
         codigo: this.props.match.params.object || localStorage.getItem("codigo")
