@@ -9,7 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.1.2",
     "axios": "^0.18.0",
     "fontawesome": "^4.7.2",
-    "i": "^0.3.6",
+    "i": "^0.3.7",
     "mapbox": "^1.0.0-beta10",
     "moment": "^2.22.2",
     "react": "^16.8.4",
